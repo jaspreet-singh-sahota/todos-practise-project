@@ -34,5 +34,9 @@ todos.forEach(item => {
 })
 
 document.querySelector('#add-button').addEventListener('click', function (e) {
-  console.log(e.target.textContent = 'button clicked')
+  console.log(e.target.textContent = 'submit')
+})
+
+document.querySelector('#todos-input').addEventListener('input', function (e) {
+  console.log(e.target.value)
 })
