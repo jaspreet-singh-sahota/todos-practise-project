@@ -24,14 +24,14 @@ const filters = {
 }
 
 const renderTodos = (todos, filters) => {
-  let filterTodos = todos.filter((todo) => todo.text.toLowerCase().includes(filters.searchText.toLowerCase()));
+  let filterTodos = todos.filter(todo => todo.text.toLowerCase().includes(filters.searchText.toLowerCase()));
 
-  filterTodos = filterTodos.filter((todo) => !todo.completed || !filters.hideCompeted );
+  const hiddenList = filterTodos.filter((todo) => !filters.hideCompeted || !todo.completed );
   
   const divParagraph = document.querySelector('#todos')
   divParagraph.innerHTML = ''
 
-  filterTodos.forEach(item => {
+  hiddenList.forEach(item => {
     const p = document.createElement('p');
     p.textContent = item.text;
     divParagraph.appendChild(p)
@@ -40,11 +40,12 @@ const renderTodos = (todos, filters) => {
   itemsLeft.textContent = `You have ${itemLeftCount} todos left`;
   body.append(itemsLeft);
 
-  document.querySelector('#hide-completed').addEventListener('change', (e) => {
-    filters.hideCompeted = e.target.checked;
-    renderTodos(todos, filters);
-  })
 }
+
+document.querySelector('#hide-completed').addEventListener('change', (e) => {
+  filters.hideCompeted = e.target.checked;
+  renderTodos(todos, filters);
+})
 
 document.querySelector('#todos-input').addEventListener('input', function (e) {
   filters.searchText = e.target.value;
