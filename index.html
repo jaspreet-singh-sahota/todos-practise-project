@@ -8,10 +8,12 @@
   </head>
   <body>
     <h1>Todos</h1>
-    <input type="text" placeholder="Add new todos" id="todos-input" value="todos-input">
-    <button id="add-button">Add item</button>
+    <form id="todos-form"> 
+      <input type="text" placeholder="Add new items" name="todoItem">
+      <button>submit</button>
+    </form>
+    <input type="text" placeholder="Search for items" id="todos-input" value="todos-input">
     <div id="todos">
-      
     </div>
     <script src="index.js"></script>
   </body>

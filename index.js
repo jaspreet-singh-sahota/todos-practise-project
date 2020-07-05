@@ -43,11 +43,17 @@ const renderTodos = (todos, filters) => {
 
 renderTodos(todos, filters)
 
-document.querySelector('#add-button').addEventListener('click', function (e) {
-  console.log(e.target.textContent = 'submit')
-})
-
 document.querySelector('#todos-input').addEventListener('input', function (e) {
   filters.searchText = e.target.value;
   renderTodos(todos, filters)
+})
+
+document.querySelector('#todos-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  todos.push({
+    text: e.target.elements.todoItem.value,
+    completed: true
+  })
+  renderTodos(todos, filters)
+  e.target.elements.todoItem.value = ""
 })
