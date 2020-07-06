@@ -1,27 +1,22 @@
 const itemsLeft = document.createElement('h2')
 const body = document.querySelector('body')
 
-const todos = [{
-  text: 'Order cat food',
-  completed: false
-}, {
-  text: 'Clean kitchen',
-  completed: true
-}, {
-  text: 'Buy food',
-  completed: true
-}, {
-  text: 'Do work',
-  completed: false
-}, {
-  text: 'Exercise',
-  completed: true
-}]
+const getSavedTodos = () => {
+  const todosJson = localStorage.getItem('todos');
+  console.log(todosJson)
+  if (todosJson !== null) {
+    return JSON.parse(todosJson);
+  } else {
+    return []
+  }
+}
 
 const filters = {
   searchText: '',
   hideCompeted: false,
 }
+
+const todos = getSavedTodos()
 
 const renderTodos = (todos, filters) => {
   let filterTodos = todos.filter(todo => todo.text.toLowerCase().includes(filters.searchText.toLowerCase()));
@@ -36,10 +31,10 @@ const renderTodos = (todos, filters) => {
     p.textContent = item.text;
     divParagraph.appendChild(p)
   });
+
   const itemLeftCount = todos.filter(item => !item.completed).length;
   itemsLeft.textContent = `You have ${itemLeftCount} todos left`;
   body.append(itemsLeft);
-
 }
 
 document.querySelector('#hide-completed').addEventListener('change', (e) => {
@@ -52,17 +47,17 @@ document.querySelector('#todos-input').addEventListener('input', function (e) {
   renderTodos(todos, filters)
 })
 
-renderTodos(todos, filters)
-
-
 document.querySelector('#todos-form').addEventListener('submit', (e) => {
   e.preventDefault();
-
+  
   todos.push({
     text: e.target.elements.todoItem.value,
     completed: e.target.check.checked
   })
+  localStorage.setItem('todos', JSON.stringify(todos));
   renderTodos(todos, filters)
-  e.target.elements.todoItem.value = ""
+  e.target.elements.todoItem.value = "";
+  e.target.check.checked = ''
 })
 
+renderTodos(todos, filters)
