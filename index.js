@@ -3,7 +3,7 @@ const body = document.querySelector('body')
 
 const getSavedTodos = () => {
   const todosJson = localStorage.getItem('todos');
-  console.log(todosJson)
+
   if (todosJson !== null) {
     return JSON.parse(todosJson);
   } else {
@@ -16,7 +16,15 @@ const filters = {
   hideCompeted: false,
 }
 
-const todos = getSavedTodos()
+const todos = getSavedTodos();
+  
+const removeTodo = (id) => {
+  const todoIndex = todos.findIndex(todo => todo.id === id)
+
+  if (todoIndex !== -1) {
+    todos.splice(todoIndex, 1)
+  }
+}
 
 const renderTodos = (todos, filters) => {
   let filterTodos = todos.filter(todo => todo.text.toLowerCase().includes(filters.searchText.toLowerCase()));
@@ -31,6 +39,12 @@ const renderTodos = (todos, filters) => {
     const checkbox = document.createElement('input')
     const p = document.createElement('span');
     const removeButton = document.createElement('button')
+    
+    removeButton.addEventListener('click', () => {
+      removeTodo(item.id);
+      saveTodos(todos);
+      renderTodos(todos, filters);
+    })
 
     checkbox.setAttribute('type', 'checkbox')
     removeButton.textContent = 'X'
@@ -56,6 +70,10 @@ document.querySelector('#todos-input').addEventListener('input', function (e) {
   renderTodos(todos, filters)
 })
 
+const saveTodos = (todos) => {
+  localStorage.setItem('todos', JSON.stringify(todos));
+}
+
 document.querySelector('#todos-form').addEventListener('submit', (e) => {
   e.preventDefault();
 
@@ -65,7 +83,7 @@ document.querySelector('#todos-form').addEventListener('submit', (e) => {
     completed: e.target.check.checked
   })
 
-  localStorage.setItem('todos', JSON.stringify(todos));
+  saveTodos(todos)
   renderTodos(todos, filters)
   e.target.elements.todoItem.value = "";
   e.target.check.checked = ''
