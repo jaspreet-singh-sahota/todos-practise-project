@@ -1,5 +1,5 @@
-const itemsLeft = document.createElement('h2')
-const body = document.querySelector('body')
+const itemsLeft = document.createElement('h2');
+const body = document.querySelector('body');
 
 const getSavedTodos = () => {
   const todosJson = localStorage.getItem('todos');
@@ -26,6 +26,14 @@ const removeTodo = (id) => {
   }
 }
 
+const toggleCheckbox = (id) => {
+  const todoCheckbox = todos.find((todo) => todo.id === id);
+
+  if (todoCheckbox !== undefined) {
+    todoCheckbox.completed = !todoCheckbox.completed;
+  }
+}
+
 const renderTodos = (todos, filters) => {
   let filterTodos = todos.filter(todo => todo.text.toLowerCase().includes(filters.searchText.toLowerCase()));
 
@@ -40,13 +48,20 @@ const renderTodos = (todos, filters) => {
     const p = document.createElement('span');
     const removeButton = document.createElement('button')
     
+    checkbox.setAttribute('type', 'checkbox')
+    checkbox.checked = item.completed
+    checkbox.addEventListener('change', () => {
+      toggleCheckbox(item.id);
+      saveTodos(todos);
+      renderTodos(todos, filters);
+    })
+    
     removeButton.addEventListener('click', () => {
       removeTodo(item.id);
       saveTodos(todos);
       renderTodos(todos, filters);
     })
-
-    checkbox.setAttribute('type', 'checkbox')
+    
     removeButton.textContent = 'X'
     p.textContent = item.text
     divParagraph.appendChild(div);
