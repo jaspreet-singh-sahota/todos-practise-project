@@ -27,9 +27,18 @@ const renderTodos = (todos, filters) => {
   divParagraph.innerHTML = ''
 
   hiddenList.forEach(item => {
-    const p = document.createElement('p');
-    p.textContent = item.text;
-    divParagraph.appendChild(p)
+    const div = document.createElement('div');
+    const checkbox = document.createElement('input')
+    const p = document.createElement('span');
+    const removeButton = document.createElement('button')
+
+    checkbox.setAttribute('type', 'checkbox')
+    removeButton.textContent = 'X'
+    p.textContent = item.text
+    divParagraph.appendChild(div);
+    div.appendChild(checkbox)
+    div.appendChild(p);
+    div.appendChild(removeButton);
   });
 
   const itemLeftCount = todos.filter(item => !item.completed).length;
