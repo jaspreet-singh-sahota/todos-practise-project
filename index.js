@@ -58,11 +58,13 @@ document.querySelector('#todos-input').addEventListener('input', function (e) {
 
 document.querySelector('#todos-form').addEventListener('submit', (e) => {
   e.preventDefault();
-  
+
   todos.push({
+    id: uuidv4(),
     text: e.target.elements.todoItem.value,
     completed: e.target.check.checked
   })
+
   localStorage.setItem('todos', JSON.stringify(todos));
   renderTodos(todos, filters)
   e.target.elements.todoItem.value = "";
